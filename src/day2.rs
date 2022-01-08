@@ -3,7 +3,7 @@ use crate::utils;
 
 pub fn exercise2() {
     //let passwords = vec!["1-3 a: abcde", "1-3 b: cdefg", "2-9 c: ccccccccc"];
-    let passwords = utils::load_from_file("day2");
+    let passwords: Vec<String> = utils::load_from_file("day2");
 
     let re = Regex::new(
             r"(\d+)-(\d+) (\w): (\w+)"
@@ -26,7 +26,7 @@ pub fn exercise2() {
 }
 
 pub fn part_two() {
-    let passwords = utils::load_from_file("day2");
+    let passwords : Vec<String> = utils::load_from_file("day2");
 
     let re = Regex::new(
             r"(\d+)-(\d+) (\w): (\w+)"
