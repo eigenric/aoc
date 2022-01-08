@@ -2,6 +2,7 @@ use regex::Regex;
 use std::fs;
 use std::collections::HashMap;
 
+// Checks if two vectors contains the same elements (unordered)
 pub fn is_equal(v1: &Vec<&str>, v2: &Vec<&str>) -> bool {
     let matching = v1.iter()
                      .zip(v2.iter())
@@ -11,6 +12,7 @@ pub fn is_equal(v1: &Vec<&str>, v2: &Vec<&str>) -> bool {
     matching == v1.len() 
 }
 
+// Checks if a passport has valid keys and optionally valid values
 pub fn is_valid(passport: &HashMap<&str, &str>, inner: bool) -> bool {
     let keys: Vec<&str> = vec!["byr", "cid", "ecl", "eyr", "hcl", "hgt", "iyr", "pid"];
     let mut passport_keys: Vec<_> = passport.keys().copied().collect();
@@ -22,19 +24,24 @@ pub fn is_valid(passport: &HashMap<&str, &str>, inner: bool) -> bool {
         _ => false,
     };
 
-    //println!("Valid keys: {}", valid_keys);
     if inner {
-        valid_keys && has_valid_values(passport)
+        let valid_values = passport.iter()
+                                .map(|(&key, value)|
+                                    valid_keys && valid_value(key, value))
+                                .all(|x| x);
+        valid_keys && valid_values
     } else {
         valid_keys
     }
 }
 
-pub fn validate_byr(value: &str) -> bool {
-    let year: i32 = value.parse::<i32>().unwrap();
-    1920 <= year && year <= 2002
+// Checks if a certain year is between two given.
+pub fn year_between(value: &str, year1: u32, year2: u32) -> bool {
+    let year: u32 = value.parse::<u32>().unwrap();
+    year1 <= year && year <= year2
 }
 
+// Checks if eye colour is exactly one of the following.
 pub fn validate_ecl(value: &str) -> bool {
     match value {
         "amb" => true,
@@ -48,16 +55,15 @@ pub fn validate_ecl(value: &str) -> bool {
     }
 }
 
-pub fn validate_eyr(value: &str) -> bool {
-    let year: i32 = value.parse::<i32>().unwrap();
-    2020 <= year && year <= 2030
-}
-
+// Checks if hair colour is a proper #hex colour
 pub fn validate_hcl(value: &str) -> bool {
     let re = Regex::new(r"#[\da-f]{6}").unwrap();
     re.is_match(value)
 }
 
+// Capture height and check if is in valid range
+// If cm: [150,193]
+// Else if in: [59, 76]
 pub fn validate_hgt(value: &str) -> bool {
     let re = Regex::new(r"(\d+)(cm|in)").unwrap();
 
@@ -76,39 +82,33 @@ pub fn validate_hgt(value: &str) -> bool {
     }
 }
 
-pub fn validate_iyr(value: &str) -> bool {
-    let year: i32 = value.parse::<i32>().unwrap();
-    2010 <= year && year <= 2020
-}
-
+// Checks is pid is a 9 digit number.
 pub fn validate_pid(value: &str) -> bool {
     let svalue = String::from(value);
     svalue.chars().all(|c| c.is_numeric()) && svalue.len() == 9
 }
 
-pub fn validate_key(key: &str, value: &str) -> bool{
+// Checks each type of entry and returns true if valid
+pub fn valid_value(key: &str, value: &str) -> bool{
     match key {
-            "byr" => validate_byr(value),
-            "cid" => true,
-            "ecl" => validate_ecl(value),
-            "eyr" => validate_eyr(value),
-            "hcl" => validate_hcl(value),
-            "hgt" => validate_hgt(value),
-            "iyr" => validate_iyr(value),
-            "pid" => validate_pid(value),
-            _ => false,
+        "byr" => year_between(value, 1920, 2002),
+        "cid" => true,
+        "ecl" => validate_ecl(value),
+        "eyr" => year_between(value, 2020, 2030),
+        "hcl" => validate_hcl(value),
+        "hgt" => validate_hgt(value),
+        "iyr" => year_between(value, 2010, 2020),
+        "pid" => validate_pid(value),
+        _ => false,
     }
-}
-
-pub fn has_valid_values(passport: &HashMap<&str, &str>) -> bool {
-    passport.iter().map(|(&key, value)| validate_key(key, value)).all(|x| x)
 }
 
 pub fn exercise1() {
     let input: String = fs::read_to_string("day4").expect("No se pudo leer");
     let raw_passports: Vec<&str> = input.split("\n\n").collect();
 
-    let mut nvalids = 0;
+    let mut nvalids1 = 0;
+    let mut nvalids2 = 0;
     for raw_passport in raw_passports {
         let re = Regex::new(r"(\w{3}):([#\w\d]+)").unwrap();
         let passport: HashMap<_, _> = re
@@ -120,9 +120,13 @@ pub fn exercise1() {
             .collect();
        
         //dbg!(&passport);
+        if is_valid(&passport, false) {
+            nvalids1 += 1;
+        }
         if is_valid(&passport, true) {
-            nvalids += 1;
+            nvalids2 += 1;
         }
     }
-    println!("El numero de pasaportes validos es {}", nvalids);
+    println!("Parte 1: nvalids={}", nvalids1);
+    println!("Parte 2: nvalids={}", nvalids2);
 }

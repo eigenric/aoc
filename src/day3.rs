@@ -1,20 +1,7 @@
-use std::fs::File;
-use std::io::BufReader;
-use std::io::BufRead;
-
-fn load_from_file(file_path: &str) -> Vec<String> {
-    let file = File::open(file_path).expect("Archivo no encontrado");
-    let reader = BufReader::new(file);
-
-    let lines: Vec<String> = reader
-        .lines()
-        .map(|line| line.unwrap())
-        .collect();
-    lines
-}
+use crate::utils;
 
 pub fn exercise1() {
-    let map = load_from_file("day3");
+    let map = utils::load_from_file("day3");
     
     let trees = map.iter()
                    .enumerate()
@@ -25,7 +12,7 @@ pub fn exercise1() {
 }
 
 pub fn part_two() {
-    let map = load_from_file("day3");
+    let map = utils::load_from_file("day3");
 
     let trees1 = map.iter()   
                     .enumerate()
