@@ -2,7 +2,7 @@ use itertools::Itertools;
 use crate::utils;
 
 pub fn exercise1() {
-    let expenses: Vec<i64> = utils::loadints_from_file("day1");
+    let expenses: Vec<i64> = utils::loadints_from_file("input/day1");
     let found = expenses.into_iter()
             .combinations(2)
             .filter(|v| v[0] + v[1] == 2020)
@@ -13,7 +13,7 @@ pub fn exercise1() {
 
 pub fn part_two() {
     
-    let expenses: Vec<i64> = utils::loadints_from_file("day1");
+    let expenses: Vec<i64> = utils::loadints_from_file("input/day1");
     let found = expenses.into_iter()
             .combinations(3)
             .filter(|v| v[0] + v[1] + v[2] == 2020)

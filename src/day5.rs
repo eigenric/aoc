@@ -14,7 +14,7 @@ pub fn get_column(seat_column: &str) -> u32 {
 }
 
 pub fn exercise1() {
-    let boarding_pass: Vec<String> = utils::load_from_file("day5");
+    let boarding_pass: Vec<String> = utils::load_from_file("input/day5");
 
     let mut seats_ids: Vec<u32> = boarding_pass.iter().map(|seat| {
         let seat_row = &seat[0..7];

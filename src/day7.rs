@@ -105,7 +105,7 @@ where
 }
 
 pub fn exercise1() {
-    let bags : Vec<String> = utils::load_from_file("day7");
+    let bags : Vec<String> = utils::load_from_file("input/day7");
 
     let mut tree : ArenaTree<String> = ArenaTree::default();
 
@@ -132,4 +132,6 @@ pub fn exercise1() {
         tree.edges(),
         tree.depth(shiny_gold)
     );
+
+    for 
 }

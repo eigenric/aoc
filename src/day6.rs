@@ -15,7 +15,7 @@ pub fn exercise1() {
 }
 
 pub fn exercise2() {
-    let form: String = fs::read_to_string("day6").expect("No se pudo cargar");
+    let form: String = fs::read_to_string("input/day6").expect("No se pudo cargar");
     let groups: Vec<String> = form.split("\n\n").map(|g| g.to_string()).collect();
 
     let result : usize = groups.iter().map(|group| {

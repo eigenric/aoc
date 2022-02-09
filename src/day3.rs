@@ -1,7 +1,7 @@
 use crate::utils;
 
 pub fn exercise1() {
-    let map = utils::load_from_file("day3");
+    let map = utils::load_from_file("input/day3");
     
     let trees = map.iter()
                    .enumerate()

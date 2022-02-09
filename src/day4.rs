@@ -104,7 +104,7 @@ pub fn valid_value(key: &str, value: &str) -> bool{
 }
 
 pub fn exercise1() {
-    let input: String = fs::read_to_string("day4").expect("No se pudo leer");
+    let input: String = fs::read_to_string("input/day4").expect("No se pudo leer");
     let raw_passports: Vec<&str> = input.split("\n\n").collect();
 
     let mut nvalids1 = 0;
