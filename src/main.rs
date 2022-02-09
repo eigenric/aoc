@@ -5,6 +5,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 //mod exp;
 
 fn main() {
@@ -24,5 +25,7 @@ fn main() {
     day6::exercise1();
     day6::exercise2();
 
+    day7::exercise1();
+    // day6::exercise2();
     //exp::exercise1();
 }

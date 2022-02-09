@@ -1,5 +1,5 @@
-use crate::utils;
 use itertools::Itertools;
+use crate::utils;
 
 pub fn exercise1() {
     let expenses: Vec<i64> = utils::loadints_from_file("day1");
